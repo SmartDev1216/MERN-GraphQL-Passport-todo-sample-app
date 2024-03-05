@@ -1,19 +1,24 @@
-import React from 'react';
-import { ApolloProvider, ApolloClient, InMemoryCache } from '@apollo/client';
-import TodoList from './components/TodoList';
-const client = new ApolloClient({
-  uri: 'http://localhost:4000/graphql',
-  cache: new InMemoryCache()
-});
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import TodoList from "./components/TodoList";
+import SignUp from "./components/SignUp";
+import SignIn from "./components/SignIn";
+import Dashboard from "./components/Dashboard";
+import Nav from "./components/Nav";
 
 const App = () => {
   return (
-    <ApolloProvider client={client}>
-      <div className="App">
-        <h1 className='text-red-500'>TODO App</h1>
-        <TodoList />
-      </div>
-    </ApolloProvider>
+    <div >
+      <Router>
+        <Nav />
+        <Routes>
+          <Route path="/" element={<Dashboard />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+          <Route path="/todo" element={<TodoList />} />
+        </Routes>
+      </Router>
+    </div>
   );
 };
 

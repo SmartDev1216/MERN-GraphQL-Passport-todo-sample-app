@@ -39,3 +39,20 @@ export const DELETE_TODO = gql`
     }
   }
 `;
+
+export const SIGN_UP = gql`
+  mutation SignUp($username:String!,$email:String!,$password:String!){
+    signUp(username:$username,email:$email,password:$password){
+      token
+    }
+  }
+`;
+
+export const SIGN_IN = gql`
+  mutation SignIn($email:String!,$password:String!){
+    signIn(email:$email,password:$password){
+      token
+    }
+  }
+`;
+
