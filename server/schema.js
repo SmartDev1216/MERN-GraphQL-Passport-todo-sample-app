@@ -15,6 +15,7 @@ const typeDefs = gql`
     }
     type Token {
       token:String!
+      user:User!
     }
     type Query {
       todos: [Todo]

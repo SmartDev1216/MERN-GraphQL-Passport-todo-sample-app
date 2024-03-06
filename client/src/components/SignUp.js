@@ -21,7 +21,7 @@ const SignUp = () => {
       const res = await signUp({variables:values})
       console.log(res.data.signUp.token)
       if(res.data.signUp.token){
-        setToken(res.data.signUp.token)
+        setToken(res)
       }
       alert('success register')
     } catch (error) {

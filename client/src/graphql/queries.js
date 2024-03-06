@@ -44,6 +44,11 @@ export const SIGN_UP = gql`
   mutation SignUp($username:String!,$email:String!,$password:String!){
     signUp(username:$username,email:$email,password:$password){
       token
+      user{
+        id
+        username
+        email
+      }
     }
   }
 `;
@@ -52,6 +57,11 @@ export const SIGN_IN = gql`
   mutation SignIn($email:String!,$password:String!){
     signIn(email:$email,password:$password){
       token
+      user{
+        id
+        username
+        email
+      }
     }
   }
 `;

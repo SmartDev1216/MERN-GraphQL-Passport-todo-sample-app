@@ -35,9 +35,11 @@ const resolvers = {
 
        const hashedPassword = await bcrypt.hash(password,10);
        const user = new User({username,email,password:hashedPassword})
+       const id =  user.id
        const token = jwt.sign({id:user.id},'secretekey',{expiresIn:'1d'})
+       const userData = {id,username,email}
       await user.save()
-       return {token:'Bearer '+ token}
+       return {token:'Bearer '+ token,user:userData}
     },
     signIn:async (_,{email,password}) => {
         const user = await User.findOne({email});
@@ -49,10 +51,10 @@ const resolvers = {
         if(!validPassword){
             throw new Error ('Invalid password')
         }
-
+        const id =  user.id
         const token = jwt.sign({id:user.id},'secretekey',{expiresIn:'1d'})
-     
-        return {token:'Bearer '+ token}
+        const userData = {id,username,email}
+        return {token:'Bearer '+ token,user:userData}
     }
   },
 };
