@@ -1,4 +1,4 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
 export const GET_TODOS = gql`
   query GetTodos {
@@ -41,10 +41,10 @@ export const DELETE_TODO = gql`
 `;
 
 export const SIGN_UP = gql`
-  mutation SignUp($username:String!,$email:String!,$password:String!){
-    signUp(username:$username,email:$email,password:$password){
+  mutation SignUp($username: String!, $email: String!, $password: String!) {
+    signUp(username: $username, email: $email, password: $password) {
       token
-      user{
+      user {
         id
         username
         email
@@ -54,10 +54,10 @@ export const SIGN_UP = gql`
 `;
 
 export const SIGN_IN = gql`
-  mutation SignIn($email:String!,$password:String!){
-    signIn(email:$email,password:$password){
+  mutation SignIn($email: String!, $password: String!) {
+    signIn(email: $email, password: $password) {
       token
-      user{
+      user {
         id
         username
         email
@@ -66,3 +66,9 @@ export const SIGN_IN = gql`
   }
 `;
 
+
+export const LOGOUT_MUTATION = gql`
+  mutation Logout{
+    logout
+  }
+`;

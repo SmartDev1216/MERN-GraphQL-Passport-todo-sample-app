@@ -1,8 +1,10 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import {Formik,Form,Field,ErrorMessage} from 'formik';
 import * as Yup from 'yup'
 import { useMutation } from '@apollo/client';
 import { SIGN_IN } from '../graphql/queries';
+import { useAuth } from '../utils/authContext';
 import setToken from '../utils/token';
 
 const SignInSchema = Yup.object().shape({
@@ -11,6 +13,8 @@ const SignInSchema = Yup.object().shape({
 })
 
 const SignIn = () => {
+    const navigate = useNavigate()
+    const {setAuth} = useAuth()
     const [signIn] = useMutation(SIGN_IN)
 
     const handleSubmit = async (values,{setSubmitting}) => {
@@ -20,6 +24,11 @@ const SignIn = () => {
             if(res.data.signIn.token){
               setToken(res.data.signIn.token)
             }
+            if(res.data&&res.data.signIn.user){
+              setAuth(res.data.signIn.user)
+              
+            }
+            navigate('/')
             alert('Sign in successful')
         } catch(error){
             alert(error.message);

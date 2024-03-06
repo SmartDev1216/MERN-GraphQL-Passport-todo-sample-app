@@ -52,10 +52,19 @@ const resolvers = {
             throw new Error ('Invalid password')
         }
         const id =  user.id
+        username = user.username
         const token = jwt.sign({id:user.id},'secretekey',{expiresIn:'1d'})
         const userData = {id,username,email}
         return {token:'Bearer '+ token,user:userData}
-    }
+    },
+    logout: async (_, __, { req }) => {
+      console.log(req)
+      // if (!req.user) {
+      //   throw new Error('User not authenticated');
+      // }
+      // req.logout();
+      return true;
+    },
   },
 };
 

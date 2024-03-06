@@ -28,6 +28,7 @@ const typeDefs = gql`
       deleteTodo(id: ID!): Todo
       signUp(username:String!,email:String!,password:String!):Token
       signIn(email:String,password:String!):Token
+      logout:Boolean!
     }
 
   `;

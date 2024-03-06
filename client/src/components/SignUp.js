@@ -1,9 +1,11 @@
 import React from 'react'
+import { useNavigate } from 'react-router-dom';
 import {Formik,Form,Field,ErrorMessage} from 'formik';
 import * as Yup from 'yup'
 import { useMutation } from '@apollo/client';
 import { SIGN_UP } from './../graphql/queries';
 import setToken from './../utils/token';
+import { useAuth } from '../utils/authContext';
 
 const SignUpSchema = Yup.object().shape({
   username:Yup.string().required('Username is required'),
@@ -15,15 +17,21 @@ const SignUpSchema = Yup.object().shape({
 
 const SignUp = () => {
   const [signUp] = useMutation(SIGN_UP);
+  const {setAuth} = useAuth()
+  const navigate = useNavigate()
 
   const handleSubmit = async (values,{setSubmitting}) => {
     try {
       const res = await signUp({variables:values})
-      console.log(res.data.signUp.token)
-      if(res.data.signUp.token){
+      console.log(res.data.signUp)
+      if(res.data&&res.data.signUp.token){
         setToken(res)
       }
+      if(res.data&&res.data.signUp.user){
+        setAuth(res.data.signUp.user)
+      }
       alert('success register')
+      navigate('/')
     } catch (error) {
       alert(error.message)
     }

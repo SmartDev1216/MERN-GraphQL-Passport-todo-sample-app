@@ -1,23 +1,36 @@
 
 const passport = require('passport');
-const JWTStrategy = require('passport-jwt').Strategy;
-const ExtractJwt = require('passport-jwt').ExtractJwt;
-const User = require('./models/User');
+const LocalStrategy = require('passport-local').Strategy;
+const User = require('./models/User')
+const bcrypt = require('bcryptjs');
 
-const options = {
-  jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-  secretOrKey: 'secretekey' // replace with your secret key
-};
-// Specify a name for the JWT strategy
-passport.use('jwt', new JWTStrategy(options, async (jwt_payload, done) => {
-    console.log('jwtpayload', jwt_payload)
-  try {
-    const user = await User.findById(jwt_payload.sub);
-    if (!user) {
-      return done(null, false);
+passport.use(
+  new LocalStrategy({ usernameField: 'email' }, async (email, password, done) => {
+    try {
+      const user = await User.findOne({ email });
+      if (!user) return done(null, false, { message: 'Incorrect email' });
+
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) return done(null, false, { message: 'Incorrect password' });
+
+      return done(null, user);
+    } catch (error) {
+      return done(error);
     }
-    return done(null, user);
+  })
+);
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
   } catch (error) {
-    return done(error, false);
+    done(error);
   }
-}));
+});
+
+module.exports = passport;

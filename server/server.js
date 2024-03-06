@@ -1,12 +1,12 @@
 const express = require("express");
 const { ApolloServer } = require("apollo-server-express");
 const mongoose = require("mongoose");
-const passport = require("passport");
-const jwtStrategy = require("./passport");
+const pasport = require('./passport')
 const cors = require("cors");
 const typeDefs = require("./schema");
 const resolvers = require("./resolvers");
 const User = require('./models/User');
+const passport = require("./passport");
 
 const app = express();
 const PORT = process.env.PORT || 4000;
@@ -14,12 +14,8 @@ const PORT = process.env.PORT || 4000;
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(passport.initialize())
 
-// Use Passport middleware for authentication
-app.use(passport.initialize());
-
-// Configure Passport to use JWT strategy
-passport.use('jwt', jwtStrategy);
 
 // Connect to MongoDB
 mongoose.connect("mongodb://localhost:27017/todo-app", {
